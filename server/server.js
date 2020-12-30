@@ -7,17 +7,6 @@ const app = express();
 const PORT = 3000;
 
 /**
- * require routers
- */
-app.post('/signup', (req, res) => {
-  //controller
-});
-
-app.post('/signin', (req, res) => {
-  //controller...
-});
-
-/**
  * handle parsing request body
  */
 app.use(express.json()); // recognize the incoming Request Object as a JSON Object.
@@ -28,6 +17,47 @@ app.use(express.urlencoded()); //recognize the incoming Request Object as string
  *
  */
 app.use(cookieParser());
+
+/**
+ * require routers
+ */
+const apiRouter = require('./routes/api');
+app.use('/', apiRouter);
+
+//express server is serving all static assets found in your client folder & sending the images to the front end when it needs to find the images
+/**
+ * handle requests for static files
+ */
+
+app.use(express.static(path.join(__dirname, '../src')));
+
+// catch-all route handler for any requests to an unknown route
+app.use('*', (req, res) => {
+  return res.sendStatus(404);
+});
+
+/**
+ * configure express global error handler
+ */
+
+app.use((err, req, res, next) => {
+  const defaultErr = {
+    log: 'Express error handler caught unknown middleware error',
+    status: 400,
+    message: { err: 'An error occurred' },
+  };
+
+  const errorObj = Object.assign(defaultErr, err);
+  console.log(errorObj.message);
+  return res.status(errorObj.status).json(errorObj.status);
+});
+
+/**
+ * start server
+ */
+const server = app.listen(PORT, () => {
+  console.log(`Server listening on port: ${PORT}`);
+});
 
 // Merriam Webster API
 const appId = '5d31df20';
@@ -73,43 +103,6 @@ app.post('/dictionary', (req, res) => {
       }
     });
   });
-});
-
-//express server is serving all static assets found in your client folder & sending the images to the front end when it needs to find the images
-/**
- * handle requests for static files
- */
-
-app.use(express.static(path.join(__dirname, '../src')));
-
-
-
-// catch-all route handler for any requests to an unknown route
-app.use('*', (req, res) => {
-  return res.sendStatus(404);
-});
-
-/**
- * configure express global error handler
- */
-
-app.use((err, req, res, next) => {
-  const defaultErr = {
-    log: 'Express error handler caught unknown middleware error',
-    status: 400,
-    message: { err: 'An error occurred' },
-  };
-
-  const errorObj = Object.assign(defaultErr, err);
-  console.log(errorObj.message);
-  return res.status(errorObj.status).json(errorObj.status);
-});
-
-/**
- * start server
- */
-const server = app.listen(PORT, () => {
-  console.log(`Server listening on port: ${PORT}`);
 });
 
 /**
