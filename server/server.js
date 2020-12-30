@@ -27,15 +27,15 @@ app.post('/signup', chationaryController.createUser, (req, res) => {
   res.status(200).redirect('/home');
 });
 
-app.post(
-  '/signin',
-  authController.getPasskey,
-  authController.verifyUser,
-  (req, res) => {
-    res.status(200).redirect('/home');
-  }
-  //routes to /home if valid, to / if not
-);
+// app.post(
+//   '/signin',
+//   authController.getPasskey,
+//   authController.verifyUser,
+//   (req, res) => {
+//     res.status(200).redirect('/home');
+//   }
+//   //routes to /home if valid, to / if not
+// );
 
 //express server is serving all static assets found in your client folder & sending the images to the front end when it needs to find the images
 /**

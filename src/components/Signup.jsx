@@ -12,7 +12,10 @@ export default function Signup() {
     const body = { username: userNameValue, password: passwordValue };
     console.log('body==>', body);
 
-    Axios.post('/signup', { body }).then(
+    Axios.post('/signup', {
+      username: body.username,
+      password: body.password,
+    }).then(
       (res) => {
         console.log('res==>', res);
       },
