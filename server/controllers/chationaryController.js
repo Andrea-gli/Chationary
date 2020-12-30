@@ -12,15 +12,20 @@ function hashPassword(password) {
 }
 
 chationaryController.createUser = (req, res, next) => {
-  const { username, password } = req.body;
-  console.log('req.body-->', req.body);
-  let hashedPass = hashPassword(password);
-  console.log('hashedPass--->', hashedPass);
-  const newProfile = [username, hashedPass];
-  const newQuery = `INSERT INTO profiles (username, password)
-    VALUES ($1, $2);`;
+  const values = [req.body.username, req.body.password];
+  //hash password
 
-  db.query(newQuery, newProfile)
+  const newQuery = `INSERT INTO profiles (username, password)
+     VALUES ($1, $2);`;
+  //   const { username, password } = req.body;
+  //   console.log('req.body-->', req.body);
+  //   let hashedPass = hashPassword(password);
+  //   console.log('hashedPass--->', hashedPass);
+  //   const newProfile = [username, hashedPass];
+  //   const newQuery = `INSERT INTO profiles (username, password)
+  //     VALUES ($1, $2);`;
+
+  db.query(newQuery, values)
     .then((data) => {
       console.log('data===>', data);
       //console.log(req.body);
