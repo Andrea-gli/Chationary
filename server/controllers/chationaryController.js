@@ -12,10 +12,11 @@ function hashPassword(password) {
 }
 
 chationaryController.createUser = (req, res, next) => {
-  const values = [req.body.username, req.body.password];
+  const hashedPass = hashPassword(req.body.password);
+  const values = [req.body.username, hashedPass];
   //hash password
 
-  const newQuery = `INSERT INTO profiles (username, password)
+  const newQuery = `INSERT INTO profiles (username, passkey)
      VALUES ($1, $2);`;
   //   const { username, password } = req.body;
   //   console.log('req.body-->', req.body);
@@ -25,15 +26,14 @@ chationaryController.createUser = (req, res, next) => {
   //   const newQuery = `INSERT INTO profiles (username, password)
   //     VALUES ($1, $2);`;
 
-  db.query(newQuery, values)
-    .then((data) => {
-      console.log('data===>', data);
-      //console.log(req.body);
-      return next();
-    })
-    .catch((err) => {
-      return next('unable to create user:' + err);
-    });
+  db.query(newQuery, values, (err, data) => {
+    if (err) {
+      console.log('errrrr=>', err);
+      return next(err);
+    }
+    console.log('data--->', data);
+    return next();
+  });
 };
 
 module.exports = chationaryController;

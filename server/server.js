@@ -24,7 +24,7 @@ app.use(cookieParser());
  */
 
 app.post('/signup', chationaryController.createUser, (req, res) => {
-  res.status(200).redirect('/home');
+  res.status(200);
 });
 
 // app.post(
