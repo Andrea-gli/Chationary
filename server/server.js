@@ -2,8 +2,8 @@ const path = require('path');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const https = require('https');
-const chationaryController = require('./controllers/chationaryController');
-const authController = require('./controllers/authController');
+const userController = require('./controllers/userController');
+
 const app = express();
 const PORT = 3000;
 
@@ -22,20 +22,8 @@ app.use(cookieParser());
 /**
  * require routers
  */
-
-app.post('/signup', chationaryController.createUser, (req, res) => {
-  res.status(200);
-});
-
-// app.post(
-//   '/signin',
-//   authController.getPasskey,
-//   authController.verifyUser,
-//   (req, res) => {
-//     res.status(200).redirect('/home');
-//   }
-//   //routes to /home if valid, to / if not
-// );
+const authRouter = require('./routes/auth');
+app.use('/auth', authRouter);
 
 //express server is serving all static assets found in your client folder & sending the images to the front end when it needs to find the images
 /**

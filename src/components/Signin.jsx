@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Axios from 'axios';
 import useInputState from './useInputState';
 
-export default function Signup() {
+export default function Signup({ history }) {
   const [userNameValue, handleUserName] = useInputState('');
   const [passwordValue, handlePassword] = useInputState('');
 
@@ -12,14 +12,19 @@ export default function Signup() {
     const body = { username: userNameValue, password: passwordValue };
     console.log('body==>', body);
 
-    Axios.post('/signin', { body }).then(
-      (res) => {
+    Axios.post('/auth/signin', {
+      username: body.username,
+      password: body.password,
+    })
+      .then((res) => {
         console.log('res==>', res);
-      },
-      (err) => {
+        if (res.status === 200) {
+          history.push('/home');
+        }
+      })
+      .catch((err) => {
         console.log('err==>', err);
-      }
-    );
+      });
   };
 
   return (
