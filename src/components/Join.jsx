@@ -32,12 +32,12 @@ const Join = ({ match }) => {
   }, []);
 
   return (
-    <div className="homeOuterContainer">
-      <div className="homeInnerContainer">
+    <div className="joinOuterContainer">
+      <div className="joinInnerContainer">
         <h1 className="heading">Welcome</h1>
         <>
           <select
-            className="homeInput"
+            className="joinInput"
             value={room}
             onChange={handleChangeRoom}
           >
@@ -58,7 +58,7 @@ const Join = ({ match }) => {
             }
             to={`/chat/${name}/${room}`}
           >
-            <button className={'homeButton'} type="submit">
+            <button className="joinButton" type="submit">
               Join
             </button>
           </Link>
