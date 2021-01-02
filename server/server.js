@@ -6,9 +6,6 @@ const https = require('https');
 const app = express();
 const PORT = 3000;
 
-// Display for rooms;
-let usersByRoom = {};
-
 /**
  * require routers
  */
@@ -40,6 +37,11 @@ app.use(express.static(path.join(__dirname, '../src')));
 
 app.use('/auth', authRouter);
 
+app.get('/activerooms', (req, res) => {
+  console.log('get request response => usersCountByRoom => ', usersCountByRoom);
+  res.status(200).json(usersCountByRoom);
+});
+
 // Oxford Dictionaries API
 const appId = '5d31df20';
 const appKey = '0ef1989e11f3eccf8ebb9f20590cdb28';
@@ -47,11 +49,6 @@ const language = 'en-us';
 let wordId;
 const fields = 'definitions';
 const strictMatch = 'false';
-
-app.get('/activerooms', (req, res) => {
-  console.log(usersByRoom);
-  res.status(200).json(usersByRoom)
-})
 
 app.post('/dictionary', (req, res) => {
   let definition = 'Sorry, we cannot find this word';
@@ -119,24 +116,38 @@ const server = app.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}`);
 });
 
+// Display for rooms;
+const usersCountByRoom = [
+  { roomName: 'English', userCount: 0 },
+  { roomName: 'French', userCount: 0 },
+  { roomName: 'Spanish', userCount: 0 },
+  { roomName: 'German', userCount: 0 },
+];
+
+// usersCountByRoom Helper functions
+const incrementCount = (roomName) => {
+  usersCountByRoom.forEach((room) => {
+    if (room.roomName === roomName) room.userCount++;
+  });
+};
+
+const decrementCount = (roomName) => {
+  usersCountByRoom.forEach((room) => {
+    if (room.roomName === roomName) room.userCount--;
+  });
+};
+
+const checkActiveRoom = (roomName, status) => {
+  return status === 'connect'
+    ? incrementCount(roomName)
+    : decrementCount(roomName);
+};
+
 /**
  * setup socket
  */
 const socketio = require('socket.io');
 const io = socketio(server);
-const checkActiveRoom = (roomName, status) => {
-  if (!usersByRoom[roomName]) return usersByRoom[roomName] = 1;
-  else if (status === 'connect') return incrementCount(roomName);
-  else if (status === 'disconnect') return decrementCount(roomName);
-}
-
-const incrementCount = (roomName) => {
-  return usersByRoom[roomName]++;
-}
-
-const decrementCount = (roomName) => {
-  return usersByRoom[roomName]--;
-}
 
 io.on('connection', (socket) => {
   console.log('socket.id => ', socket.id);
@@ -144,9 +155,10 @@ io.on('connection', (socket) => {
 
   console.log('before joining room => socket.rooms => ', socket.rooms);
   socket.join(room);
-  checkActiveRoom(room, 'connect');
-  console.log(usersByRoom);
   console.log('After joining room => ', socket.rooms);
+
+  checkActiveRoom(room, 'connect');
+  console.log('on connect usersCountByRoom => ', usersCountByRoom);
 
   socket.emit('message', {
     id: socket.id,
@@ -174,8 +186,10 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     socket.leave(room);
+
     checkActiveRoom(room, 'disconnect');
-    console.log(usersByRoom);
+    console.log('on disconnect usersCountByRoom => ', usersCountByRoom);
+
     socket.to(room).emit('message', {
       id: socket.id,
       name: 'Admin',

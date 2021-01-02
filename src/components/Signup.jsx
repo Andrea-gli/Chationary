@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import useInputState from './useInputState';
 
 const Signup = ({ history }) => {
@@ -24,7 +23,7 @@ const Signup = ({ history }) => {
         body: JSON.stringify(body),
       });
 
-      console.log(response);
+      console.log('response.status => ', response.status);
 
       if (response.status === 200) {
         console.log('Signed Up!');
@@ -55,13 +54,13 @@ const Signup = ({ history }) => {
         },
         body: JSON.stringify(body),
       });
-      const data = await response.json();
 
-      console.log('response => ', response);
-      console.log('data => ', data);
+      console.log('response.status => ', response.status);
 
       if (response.status === 200) {
-        // data is true or false
+        const data = await response.json();
+        console.log('data => ', data);
+
         setNameExists(data);
 
         setTimeout(() => {
@@ -75,7 +74,7 @@ const Signup = ({ history }) => {
         }, 2000);
       }
     } catch (error) {
-      console.log('Error in handleClick of SignUp component:', error);
+      console.log('Error in handleClick of Signup component:', error);
     }
   };
 
@@ -97,10 +96,10 @@ const Signup = ({ history }) => {
       <form className="form-signup" onSubmit={handleSubmit}>
         <label>
           <span>Username</span>
-          <input type="text" value={username} onChange={handleUsername} />
+          <input className="margin-bottom-10" type="text" value={username} onChange={handleUsername} />
         </label>
 
-        <div class="checkUsername">
+        <div className="checkUsername">
           <button onClick={handleClick}>Check Availability</button>
           {nameExists === null ? null : nameExists ? (
             <img src={'../assets/images/x.png'} />

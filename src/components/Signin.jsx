@@ -22,7 +22,7 @@ const Signin = ({ history }) => {
         body: JSON.stringify(body),
       });
 
-      //console.log('response => ', response);
+      console.log('response.status => ', response.status);
 
       if (response.status === 200) {
         console.log('Signed In!');
@@ -36,12 +36,14 @@ const Signin = ({ history }) => {
         }, 2000);
       }
     } catch (error) {
-      console.log('Error in handleSubmit of SignIn component:', error);
+      console.log('Error in handleSubmit of Signin component:', error);
     }
   };
+
   const styleRed = {
     color: 'red',
   };
+
   return (
     <div className="signin">
       <h1>Sign In</h1>

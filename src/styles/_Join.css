@@ -4,7 +4,6 @@
   text-align: center;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
   height: 100vh;
   padding-top: 180px;
@@ -18,6 +17,25 @@
   color: #d9d9d9;
   font-size: 2.5em;
   border-bottom: 2px solid #d9d9d9;
+}
+
+.usersCountByRoom {
+  color: #d9d9d9;
+  margin-top: 30px;
+}
+
+.usersCountByRoom div {
+  margin: 15px;
+}
+
+.room {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.room img {
+  margin-right: 12px;
 }
 
 @media (min-width: 320px) and (max-width: 480px) {

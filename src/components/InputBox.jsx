@@ -40,8 +40,8 @@ const InputBox = ({ sendNewMessage, sendTypingMsg }) => {
             set="apple"
             title="Pick your emoji…"
             emoji="point_up"
-            autoFocus="true"
-            enableFrequentEmojiSort="true"
+            autoFocus={true}
+            enableFrequentEmojiSort={true}
             style={{ position: 'absolute', bottom: '80px', right: '300px' }}
             onSelect={addEmoji}
           />
