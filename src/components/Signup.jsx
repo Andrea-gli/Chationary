@@ -83,23 +83,28 @@ const Signup = ({ history }) => {
   };
 
   return (
-    <div className="signup">
+    <div className='signup'>
       <h1>Sign Up</h1>
 
-      <div className="redirect-to-signin">
+      <div className='redirect-to-signin'>
         <p>Already have an account?</p>
-        <Link to="/" className="link-signin">
+        <Link to='/' className='link-signin'>
           Sign In
         </Link>
       </div>
 
-      <form className="form-signup" onSubmit={handleSubmit}>
+      <form className='form-signup' onSubmit={handleSubmit}>
         <label>
           <span>Username</span>
-          <input className="margin-bottom-10" type="text" value={username} onChange={handleUsername} />
+          <input
+            className='margin-bottom-10'
+            type='text'
+            value={username}
+            onChange={handleUsername}
+          />
         </label>
 
-        <div className="checkUsername">
+        <div className='checkUsername'>
           <button onClick={handleClick}>Check Availability</button>
           {nameExists === null ? null : nameExists ? (
             <img src={'../assets/images/x.png'} />
@@ -110,9 +115,9 @@ const Signup = ({ history }) => {
 
         <label>
           <span>Password</span>
-          <input type="password" value={password} onChange={handlePassword} />
+          <input type='password' value={password} onChange={handlePassword} />
         </label>
-        <button className="btn btn-signup">Sign Up</button>
+        <button className='btn btn-signup'>Sign Up</button>
         {warn ? (
           <p style={styleRed}>Sign Up Not Completed. Please Try Again</p>
         ) : null}
